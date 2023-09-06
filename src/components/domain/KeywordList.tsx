@@ -1,27 +1,40 @@
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import searchApi from "../../api/search";
 import useDebounce from "../../hooks/useDebounce";
-import { RecommendedKeyword } from "../../types";
+import getCachedKeywords from "../../utils/getCachedKeywords";
+import KeywordItem from "./KeywordItem";
 
 const KeywordList = () => {
   const [keyword, setKeyword] = useState("");
   const [error, setError] = useState("");
-  const [recommendedKeywords, setRecommendedKeywords] = useState<
-    RecommendedKeyword[]
-  >([]);
+  const [recommendedKeywords, setRecommendedKeywords] = useState([]);
   const debouncedKeyword = useDebounce(keyword);
+  const [selectedItem, setSelectedItem] = useState(-1);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowUp" && selectedItem > 0) {
+      setSelectedItem((prev) => prev - 1);
+    } else if (
+      e.key === "ArrowDown" &&
+      selectedItem < recommendedKeywords.length - 1
+    ) {
+      setSelectedItem((prev) => prev + 1);
+    }
+  };
+
+  const fetchCachedKeywords = async () => {
+    try {
+      const recommended = await getCachedKeywords(debouncedKeyword);
+      setRecommendedKeywords(recommended);
+    } catch (err: any) {
+      setError("추천 검색어를 불러오는 중 오류가 발생했습니다");
+    }
+  };
 
   useEffect(() => {
-    const fetchRecommended = async () => {
-      try {
-        const res = await searchApi.getRecommended(debouncedKeyword);
-        setRecommendedKeywords(res.data);
-      } catch (e) {
-        setError("추천 검색어를 불러오는 중 오류가 발생했습니다");
-      }
-    };
-    debouncedKeyword && fetchRecommended();
+    if (debouncedKeyword) {
+      fetchCachedKeywords();
+    }
   }, [debouncedKeyword]);
 
   return (
@@ -31,17 +44,28 @@ const KeywordList = () => {
         name="search-input"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       <div>
         {error && <span>{error}</span>}
-        {recommendedKeywords.length === 0 ? (
-          <span>추천 검색어가 없습니다</span>
+        {keyword ? (
+          recommendedKeywords.length === 0 ? (
+            <span>추천 검색어가 없습니다</span>
+          ) : (
+            <List>
+              {recommendedKeywords.map(({ sickCd, sickNm, idx }) => {
+                return (
+                  <KeywordItem
+                    key={sickCd}
+                    sickNm={sickNm}
+                    selected={selectedItem === idx}
+                  />
+                );
+              })}
+            </List>
+          )
         ) : (
-          <List>
-            {recommendedKeywords.map(({ sickCd, sickNm }) => {
-              return <li key={sickCd}>{sickNm}</li>;
-            })}
-          </List>
+          <></>
         )}
       </div>
     </>
