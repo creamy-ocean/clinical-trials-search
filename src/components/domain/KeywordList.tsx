@@ -20,6 +20,7 @@ const KeywordList = () => {
     ) {
       setSelectedItem((prev) => prev + 1);
     }
+    console.log(selectedItem);
   };
 
   const fetchCachedKeywords = async () => {
@@ -53,7 +54,7 @@ const KeywordList = () => {
             <span>추천 검색어가 없습니다</span>
           ) : (
             <List>
-              {recommendedKeywords.map(({ sickCd, sickNm, idx }) => {
+              {recommendedKeywords.map(({ sickCd, sickNm }, idx) => {
                 return (
                   <KeywordItem
                     key={sickCd}
