@@ -31,7 +31,6 @@ const KeywordList = () => {
     ) {
       setSelectedItem((prev) => prev + 1);
     }
-    console.log(selectedItem);
   };
 
   useEffect(() => {
