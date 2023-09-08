@@ -4,9 +4,15 @@ interface Props {
   keyword: string;
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
   selectKeyword: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  setSelectedItem: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const KeywordInput = ({ keyword, setKeyword, selectKeyword }: Props) => {
+const KeywordInput = ({
+  keyword,
+  setKeyword,
+  selectKeyword,
+  setSelectedItem,
+}: Props) => {
   return (
     <SearchBox>
       <SearchInput
@@ -16,8 +22,10 @@ const KeywordInput = ({ keyword, setKeyword, selectKeyword }: Props) => {
         placeholder="질환명을 입력해 주세요."
         onChange={(e) => {
           setKeyword(e.target.value);
+          setSelectedItem(-1);
         }}
         onKeyDown={selectKeyword}
+        onBlur={() => setSelectedItem(-1)}
       />
       {keyword && (
         <DeleteButton

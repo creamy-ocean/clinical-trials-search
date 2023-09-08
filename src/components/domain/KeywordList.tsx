@@ -13,10 +13,14 @@ const KeywordList = () => {
   const debouncedKeyword = useDebounce(keyword);
   const scrollRef = useRef<HTMLUListElement>(null);
 
-  useEffect(() => {
-    const focused = scrollRef.current?.querySelector(".focused");
-    focused && focused.scrollIntoView({ block: "nearest" });
-  }, [selectedItem]);
+  const fetchCachedKeywords = async () => {
+    try {
+      const recommended = await getCachedKeywords(debouncedKeyword);
+      setRecommendedKeywords(recommended);
+    } catch (err: any) {
+      setError("추천 검색어를 불러오는 중 오류가 발생했습니다");
+    }
+  };
 
   const selectKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowUp" && selectedItem > 0) {
@@ -30,20 +34,16 @@ const KeywordList = () => {
     console.log(selectedItem);
   };
 
-  const fetchCachedKeywords = async () => {
-    try {
-      const recommended = await getCachedKeywords(debouncedKeyword);
-      setRecommendedKeywords(recommended);
-    } catch (err: any) {
-      setError("추천 검색어를 불러오는 중 오류가 발생했습니다");
-    }
-  };
-
   useEffect(() => {
     if (debouncedKeyword) {
       fetchCachedKeywords();
     }
   }, [debouncedKeyword]);
+
+  useEffect(() => {
+    const focused = scrollRef.current?.querySelector(".focused");
+    focused && focused.scrollIntoView({ block: "nearest" });
+  }, [selectedItem]);
 
   return (
     <>
@@ -51,6 +51,7 @@ const KeywordList = () => {
         keyword={keyword}
         setKeyword={setKeyword}
         selectKeyword={selectKeyword}
+        setSelectedItem={setSelectedItem}
       />
       {error && <StyledMsg>{error}</StyledMsg>}
       {keyword && (
