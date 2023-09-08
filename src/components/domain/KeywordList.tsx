@@ -49,6 +49,15 @@ const KeywordList = () => {
           onChange={(e) => setKeyword(e.target.value)}
           onKeyDown={handleKeyDown}
         />
+        {keyword && (
+          <DeleteButton
+            onClick={() => {
+              setKeyword("");
+            }}
+          >
+            <i className="fa-solid fa-x"></i>
+          </DeleteButton>
+        )}
         <SearchButton>
           <i className="fa-solid fa-magnifying-glass" />
         </SearchButton>
@@ -108,6 +117,18 @@ const Button = styled.button`
   border: none;
   border-radius: 50%;
   cursor: pointer;
+`;
+
+const DeleteButton = styled(Button)`
+  width: 1.5rem;
+  height: 1.5rem;
+  top: 34%;
+  right: 15%;
+  background-color: #a7afb7;
+  i {
+    margin-top: 0.1rem;
+    color: #fff;
+  }
 `;
 
 const SearchButton = styled(Button)`
