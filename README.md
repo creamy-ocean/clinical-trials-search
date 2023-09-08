@@ -6,8 +6,34 @@
 한국임상정보 사이트의 검색 영역을 클론하여 추천 검색어 목록을 구현한 사이트  
 <br/>
 
-## 확인 방법
-> npm clone 후 npm install 하여 확인 
+## 🎬 프로젝트 로컬 실행 방법
+
+1. 상단 [서버 레포](https://github.com/walking-sunset/assignment-api)에 접속해 git clone, npm start를 하여 서버를 실행합니다.
+
+2. 본 repository를 clone합니다.
+
+```bash
+$ git clone [https://github.com/pre-onboarding-12th-team3/pre-onboarding-12th-3-3.git](https://github.com/creamy-ocean/clinical-trials-search)
+```
+
+3. .env파일 설정
+
+```bash
+폴더 최상단 루트에 .env파일을 생성하고 안에
+REACT_APP_AXIOS_BASE_URL = 'http://localhost:4000/'
+를 작성하고 저장해주세요
+```
+
+4. 의존성 패키지를 설치합니다.
+
+```bash
+npm install
+```
+
+5. 개발 서버를 실행합니다.
+
+```bash
+npm start
 <br/>
 
 ## 구현 기능
