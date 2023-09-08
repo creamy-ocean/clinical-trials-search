@@ -60,12 +60,13 @@ const KeywordList = () => {
             <StyledMsg>추천 검색어가 없습니다</StyledMsg>
           ) : (
             <RecommendedList>
-              <StyledSpan>추천 검색어</StyledSpan>
+              <StyledDiv>추천 검색어</StyledDiv>
               {recommendedKeywords.map(({ sickCd, sickNm }, idx) => {
                 return (
                   <KeywordItem
                     key={sickCd}
                     sickNm={sickNm}
+                    keyword={debouncedKeyword}
                     selected={selectedItem === idx}
                   />
                 );
@@ -102,14 +103,18 @@ const SearchInput = styled.input`
   }
 `;
 
-const SearchButton = styled.button`
+const Button = styled.button`
   position: absolute;
-  top: 23%;
-  right: 3%;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+const SearchButton = styled(Button)`
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 50%;
-  border: none;
+  top: 23%;
+  right: 3%;
   background-color: #007be9;
   i {
     color: white;
@@ -124,15 +129,30 @@ const StyledMsg = styled.div`
 
 const RecommendedBox = styled.div`
   min-height: 5rem;
+  max-height: 53vh;
   width: 28rem;
   margin-top: 1rem;
   border-radius: 1rem;
   background-color: #fff;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 3rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 5rem;
+    border-radius: 2rem;
+    background: #007be9;
+    border: 1rem solid #fff;
+  }
+  &::-webkit-scrollbar-track {
+    margin-top: 2.5rem;
+  }
 `;
 
-const StyledSpan = styled.span`
+const StyledDiv = styled.div`
+  padding: 0.5rem 1.5rem;
   font-size: 0.8rem;
-  color: #777;
+  color: #64717f;
 `;
 
 const RecommendedList = styled.ul`
