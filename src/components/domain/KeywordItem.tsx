@@ -9,18 +9,22 @@ interface Props {
 const KeywordItem = ({ sickNm, keyword, selected }: Props) => {
   const keywordIdx = sickNm.indexOf(keyword);
   return (
-    <ListItem selected={selected}>
+    <ListItem selected={selected} className={selected ? "focused" : ""}>
       <i className="fa-solid fa-magnifying-glass" />
-      {sickNm.substring(0, keywordIdx)}
-      <Highlighted>
-        {sickNm.substring(keywordIdx, keywordIdx + keyword.length)}
-      </Highlighted>
-      {sickNm.substring(keywordIdx + keyword.length)}
+      <div>
+        {sickNm.substring(0, keywordIdx)}
+        <Highlighted>
+          {sickNm.substring(keywordIdx, keywordIdx + keyword.length)}
+        </Highlighted>
+        {sickNm.substring(keywordIdx + keyword.length)}
+      </div>
     </ListItem>
   );
 };
 
 const ListItem = styled.li<{ selected: boolean }>`
+  display: flex;
+  align-items: center;
   padding: 0.5rem 1.5rem;
   background-color: ${({ selected }) => (selected ? "#F8F9FA" : "")};
   cursor: pointer;
