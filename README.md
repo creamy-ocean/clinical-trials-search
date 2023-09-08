@@ -34,6 +34,8 @@ npm install
 
 ```bash
 npm start
+```
+
 <br/>
 
 ## 구현 기능
