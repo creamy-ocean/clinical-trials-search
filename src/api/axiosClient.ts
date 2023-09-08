@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const config = {
-  baseURL: process.env.REACT_APP_AXIOS_BASE_URL,
+  baseURL: "http://localhost:4000",
   headers: { "Content-Type": "application/json" },
 };
 
