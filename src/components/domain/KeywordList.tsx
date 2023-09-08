@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import useDebounce from "../../hooks/useDebounce";
 import getCachedKeywords from "../../utils/getCachedKeywords";
@@ -8,8 +8,14 @@ const KeywordList = () => {
   const [keyword, setKeyword] = useState("");
   const [error, setError] = useState("");
   const [recommendedKeywords, setRecommendedKeywords] = useState([]);
-  const debouncedKeyword = useDebounce(keyword);
   const [selectedItem, setSelectedItem] = useState(-1);
+  const debouncedKeyword = useDebounce(keyword);
+  const scrollRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    const focused = scrollRef.current?.querySelector(".focused");
+    focused && focused.scrollIntoView({ block: "nearest" });
+  }, [selectedItem]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowUp" && selectedItem > 0) {
@@ -46,7 +52,9 @@ const KeywordList = () => {
           name="search-input"
           value={keyword}
           placeholder="질환명을 입력해 주세요."
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={(e) => {
+            setKeyword(e.target.value);
+          }}
           onKeyDown={handleKeyDown}
         />
         {keyword && (
@@ -68,19 +76,21 @@ const KeywordList = () => {
           {recommendedKeywords.length === 0 ? (
             <StyledMsg>추천 검색어가 없습니다</StyledMsg>
           ) : (
-            <RecommendedList>
-              <StyledDiv>추천 검색어</StyledDiv>
-              {recommendedKeywords.map(({ sickCd, sickNm }, idx) => {
-                return (
-                  <KeywordItem
-                    key={sickCd}
-                    sickNm={sickNm}
-                    keyword={debouncedKeyword}
-                    selected={selectedItem === idx}
-                  />
-                );
-              })}
-            </RecommendedList>
+            <>
+              <RecommendedList ref={scrollRef}>
+                <StyledDiv>추천 검색어</StyledDiv>
+                {recommendedKeywords.map(({ sickCd, sickNm }, idx) => {
+                  return (
+                    <KeywordItem
+                      key={sickCd}
+                      sickNm={sickNm}
+                      keyword={debouncedKeyword}
+                      selected={selectedItem === idx}
+                    />
+                  );
+                })}
+              </RecommendedList>
+            </>
           )}
         </RecommendedBox>
       )}
@@ -150,7 +160,7 @@ const StyledMsg = styled.div`
 
 const RecommendedBox = styled.div`
   min-height: 5rem;
-  max-height: 53vh;
+  max-height: 52vh;
   width: 28rem;
   margin-top: 1rem;
   border-radius: 1rem;

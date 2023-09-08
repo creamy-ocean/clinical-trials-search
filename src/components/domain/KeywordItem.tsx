@@ -9,7 +9,7 @@ interface Props {
 const KeywordItem = ({ sickNm, keyword, selected }: Props) => {
   const keywordIdx = sickNm.indexOf(keyword);
   return (
-    <ListItem selected={selected}>
+    <ListItem selected={selected} className={selected ? "focused" : ""}>
       <i className="fa-solid fa-magnifying-glass" />
       <div>
         {sickNm.substring(0, keywordIdx)}
