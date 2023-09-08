@@ -8,7 +8,7 @@
 
 ## 🎬 프로젝트 로컬 실행 방법
 
-1. 상단 [서버 레포](https://github.com/walking-sunset/assignment-api)에 접속해 git clone, npm start를 하여 서버를 실행합니다.
+1. [서버 레포](https://github.com/walking-sunset/assignment-api)에 접속해 git clone, npm start를 하여 서버를 실행합니다.
 
 2. 본 repository를 clone합니다.
 
