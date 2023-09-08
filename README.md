@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# Clinical Trials Search
+> 원티드 프리온보딩 3주차 과제
+<br/>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 소개
+한국임상정보 사이트의 검색 영역을 클론하여 추천 검색어 목록을 구현한 사이트  
+<br/>
 
-## Available Scripts
+## 확인 방법
+> npm clone 후 npm install 하여 확인 
+<br/>
 
-In the project directory, you can run:
+## 구현 기능
+- API 호출별 로컬 캐싱 구현
+  - 웹 브라우저의 localStorage에 검색어별 캐시 데이터 보관
+  - 검색어를 입력하면 getCachedKeywords 함수를 사용
+    - 캐싱된 데이터가 존재하는 경우 해당 데이터를 받아옴
+    - 캐싱된 데이터가 존재하지 않는 경우 api를 호출해 데이터를 받아옴
+    - https://github.com/creamy-ocean/clinical-trials-search/blob/5cf8e61ad9f8f1eaa868086bd11aad6904804902/src/utils/getCachedKeywords.ts#L1-L34
+      
+- 로컬 캐시 데이터 만료 시간 구현
+  - Date.now()에 EXPIRE_TIME을 더한 만료 시간을 캐시 데이터에 포함하여 저장
+  - 캐싱된 데이터를 가져올 때 Date.now()가 만료 시간보다 큰 경우 스토리지에서 해당 데이터를 삭제하고 새롭게 api를 호출
+  - https://github.com/creamy-ocean/clinical-trials-search/blob/5cf8e61ad9f8f1eaa868086bd11aad6904804902/src/utils/getCachedKeywords.ts#L1-L34
+ 
+- API 호출 횟수를 줄이는 전략 수립 및 실행
+  - 검색어가 입력될 때 useDebounce 커스텀 훅에 검색어를 전달
+  - 훅 내부에서 setTimeout을 이용해 0.2초 동안 추가 입력이 없으면 전달한 검색어를 리턴
+  - useDebounce에서 debounce 처리된 검색어가 존재할 때만 getCachedKeywords를 통해 API 호출
+    - 이 때 캐싱 데이터가 있으면 캐싱된 데이터 출력
+   
+- 키보드만으로 추천 검색어 이동 가능하도록 구현
+  - input 태그에 onKeyDown 이벤트 핸들러를 추가해 방향키를 사용하면 selectedItem state 값이 변하도록 구현
+  - 추천 검색어 리스트에서 map을 이용해 검색어 아이템의 index 값과 selectedItem state 값이 같으면 해당 검색어를 하이라이트 처리
+  - scrollIntoView 함수를 사용해 추천 검색어 이동 시 자동으로 스크롤 되도록 구현
+<br/>
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 기술 스택
+<div>
+  <img src="https://img.shields.io/badge/react-61DAFB?style=flat&logo=react&logoColor=white">
+  <img src="https://img.shields.io/badge/typescript-3178C6?style=flat&logo=typescript&logoColor=white">
+  <img src="https://img.shields.io/badge/axios-5A29E4?style=flat&logo=axios&logoColor=white">
+  <img src="https://img.shields.io/badge/styled components-DB7093?style=flat&logo=styledcomponents&logoColor=white">
+</div>
