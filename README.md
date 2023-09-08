@@ -13,7 +13,7 @@
 2. 본 repository를 clone합니다.
 
 ```bash
-$ git clone [https://github.com/pre-onboarding-12th-team3/pre-onboarding-12th-3-3.git](https://github.com/creamy-ocean/clinical-trials-search)
+$ git clone https://github.com/creamy-ocean/clinical-trials-search
 ```
 
 3. .env파일 설정
