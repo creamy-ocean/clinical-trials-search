@@ -28,9 +28,9 @@ $ git clone https://github.com/creamy-ocean/clinical-trials-search
 3. .env파일 설정
 
 ```bash
-폴더 최상단 루트에 .env파일을 생성하고 안에
+폴더 최상단 루트에 .env파일을 생성하고 해당 파일 안에
 REACT_APP_AXIOS_BASE_URL = 'http://localhost:4000'
-를 작성하고 저장해주세요
+을 작성하고 저장해주세요
 ```
 
 4. 의존성 패키지를 설치합니다.
