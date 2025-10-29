@@ -1,34 +1,46 @@
 # Clinical Trials Search
-
+<!--
 > 원티드 프리온보딩 3주차 과제
->
-> Wanted Pre-Onboarding Week 3 Assignment
+>-->
+> Wanted Frontend Pre-Onboarding Week 3 Assignment
 
-<br/><br/>
-
-## 프로젝트 소개 (Project Overview)
-
-- 한국임상정보 사이트의 검색 영역을 클론하여 추천 검색어 목록을 구현한 사이트  
-- A clone of the search feature from the Korean Clinical Trials website, implementing a recommendation keyword list.
 <br/>
 
-## 실행 화면 (Preview)
-
-![Honeycam 2023-09-09 00-03-44](https://github.com/creamy-ocean/clinical-trials-search/assets/93719660/64b980d4-3f1f-48eb-a8d7-c9fd581a0e84)
+## Project Overview
+<!--
+- 한국임상정보 사이트의 검색 영역을 클론하여 추천 검색어 목록을 구현한 사이트  -->
+- A clone of the search feature from the Korean Clinical Trials website with keyword recommendation and optimised API call management.
 <br/>
+
+## Objectives
+- Implement local caching to prevent redundant API calls
+- Reduce API call frequency using debouncing technique
+- Enable keyboard navigation through keyword recommendations
 <br/>
 
-## 배포 링크 및 서버 주소 (Deployment Link and Server Address)
+## Live Demo
+https://co-clinical-trials-search.netlify.app
+<!-- - 서버 주소 (Sever Address) : https://clinical-trials-search-api.vercel.app -->
+<br/>
 
-- 배포 링크 (Deployment Link) : https://co-clinical-trials-search.netlify.app
-- 서버 주소 (Sever Address) : https://clinical-trials-search-api.vercel.app
-  <br/><br/>
+## Preview
+<img width="460" alt="Preview Screenshot" src="https://github.com/creamy-ocean/clinical-trials-search/assets/93719660/64b980d4-3f1f-48eb-a8d7-c9fd581a0e84">
+<br/>
 
-## 로컬 실행 방법
+<!--## Execution
 
+1. Access the [Server Repository](https://github.com/walking-sunset/assignment-api), clone, and start the server by using the command below.
+   ```
+   npm start
+   ```
+2. Clone this repository.
+3. Create an .env file in the root directory and write the content as below.
+```
+REACT_APP_AXIOS_BASE_URL=http://localhost:4000
+``` 
 1. [서버 레포](https://github.com/walking-sunset/assignment-api)에 접속해 git clone, npm start를 하여 서버를 실행합니다.
 
-3. 본 repository를 clone합니다.
+2. 본 repository를 clone합니다.
 
 ```bash
 $ git clone https://github.com/creamy-ocean/clinical-trials-search
@@ -52,13 +64,13 @@ npm install
 
 ```bash
 npm start
-```
+```-->
 
 
 <br/>
 
-## 구현 기능 (Features)
-
+## Key Features
+<!--
 ### API 호출별 로컬 캐싱 구현 (Local Caching for Each API Call) [(코드 보러 가기)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/utils/getCachedKeywords.ts)
 
 - 웹 브라우저의 localStorage에 검색어별 캐시 데이터 보관
@@ -68,16 +80,18 @@ npm start
 - 로컬 캐시 데이터 만료 시간 구현
   - Date.now()에 EXPIRE_TIME을 더한 만료 시간을 캐시 데이터에 포함하여 저장
   - 캐싱된 데이터를 가져올 때 Date.now()가 만료 시간보다 큰 경우 스토리지에서 해당 데이터를 삭제하고 새롭게 api를 호출
-- Stores cached data for each search term in localStorage.
-- Uses the getCachedKeywords function:
-  - Retrieves cached data if available.
-  - Calls the API if no cached data is found.
-- Implements an expiration time for cached data:
-  - Adds an expiration timestamp (EXPIRE_TIME) to the cache when saving.
-  - Deletes expired data from localStorage and fetches new data.
+-->
+### 1. Local Caching with Expiration
+**[(View Code ->)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/utils/getCachedKeywords.ts)**
 
-![임상시험_1](https://github.com/creamy-ocean/clinical-trials-search/assets/93719660/af50dff9-886c-415d-be02-808371708b6d)
+Implements a caching strategy to minimize API calls:
+- Stores search results in `localStorage` with expiration timestamps (10-minute lifetime)
+- Invalidates and refreshes expired data when accessed
+- Reduces server load and provides instant results for recently searched keywords
 
+![Local Cache Example](https://github.com/creamy-ocean/clinical-trials-search/assets/93719660/af50dff9-886c-415d-be02-808371708b6d)
+
+**Implementation:**
 ```javascript
 import searchApi from "../api/search";
 
@@ -115,18 +129,23 @@ const getCachedKeywords = (keyword: string) => {
 export default getCachedKeywords;
 ```
 
-### API 호출 횟수를 줄이는 전략 수립 및 실행 (Reducing API Call Frequency) [(코드 보러 가기)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/hooks/useDebounce.ts)
+<!--### API 호출 횟수를 줄이는 전략 수립 및 실행 (Reducing API Call Frequency) [(코드 보러 가기)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/hooks/useDebounce.ts)
 
 - 검색어가 입력될 때 useDebounce 커스텀 훅에 검색어를 전달
 - 훅 내부에서 setTimeout을 이용해 0.2초 동안 추가 입력이 없으면 전달한 검색어를 리턴
 - useDebounce에서 debounce 처리된 검색어가 존재할 때만 getCachedKeywords를 통해 API 호출
-  - 이 때 캐싱 데이터가 있으면 캐싱된 데이터 출력
-- Utilized a custom useDebounce hook:
-- Waits for 0.2 seconds of inactivity before returning the search term.
-- Calls the API only when a debounced search term is available.
-  - Displays cached data if available, reducing unnecessary API calls.
+  - 이 때 캐싱 데이터가 있으면 캐싱된 데이터 출력-->
+---
+  
+### 2. Search Input Debouncing
+**[(View Code ->)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/hooks/useDebounce.ts)**
 
-```javascript
+Optimizes API call frequency by implementing a custom debounce hook:
+- Delays API requests by 200ms after user stops typing
+- Prevents excessive API calls during rapid input
+
+**Implementation:**
+```typescript
 import { useEffect, useState } from "react";
 
 const useDebounce = (value: string) => {
@@ -147,16 +166,24 @@ const useDebounce = (value: string) => {
 export default useDebounce;
 ```
 
-### 키보드만으로 추천 검색어 이동 가능하도록 구현 (Navigating Recommendation List with Keyboard) [(코드 보러 가기)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/components/domain/KeywordList.tsx)
+<!--### 키보드만으로 추천 검색어 이동 가능하도록 구현 (Navigating Recommendation List with Keyboard) [(코드 보러 가기)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/components/domain/KeywordList.tsx)
 
 - input 태그에 onKeyDown 이벤트 핸들러를 추가해 방향키를 사용하면 selectedItem state 값이 변하도록 구현
 - 추천 검색어 리스트에서 map을 이용해 검색어 아이템의 index 값과 selectedItem state 값이 같으면 해당 검색어를 하이라이트 처리
-- scrollIntoView 함수를 사용해 추천 검색어 이동 시 자동으로 스크롤 되도록 구현
-- Added an onKeyDown event handler to the input field to allow keyboard navigation.
-- Highlighted the selected keyword item in the list using the selectedItem state.
-- Used the scrollIntoView function for automatic scrolling during navigation.
+- scrollIntoView 함수를 사용해 추천 검색어 이동 시 자동으로 스크롤 되도록 구현-->
 
-```javascript
+---
+
+### 3. Keyboard Navigation
+**[(View Code ->)](https://github.com/creamy-ocean/clinical-trials-search/blob/master/src/components/domain/KeywordList.tsx)**
+
+Enables arrow key navigation through suggestions:
+- Up/down arrow keys to move through the recommendation list
+- Auto-scroll to keep selected item in view
+- Visual highlight for the matching part
+
+**Implementation:**
+```typescript
 const [selectedItem, setSelectedItem] = useState(-1);
 const scrollRef = useRef < HTMLUListElement > null;
 
@@ -192,7 +219,7 @@ useEffect(() => {
 
   <br/>
 
-## 기술 스택 (Tech Stack)
+## Tech Stack
 
 <div>
   <img src="https://img.shields.io/badge/react-61DAFB?style=flat&logo=react&logoColor=white">
